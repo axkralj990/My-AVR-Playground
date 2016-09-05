@@ -13,11 +13,11 @@
 
 int main(void)
 {
-	uint8_t sensorValue;
+	uint16_t sensorValue;
 	char str[16];
 	
     initUSART();
-	init_ADC(5,8,8);
+	init_ADC(5,10,8);
 	
 	//start_FreeRunning_ADC();
 	
@@ -27,7 +27,7 @@ int main(void)
     while (1) 
     {
 		start_SingleConversion_ADC();
-		sensorValue = read_ADC_8bit();
+		sensorValue = read_ADC_10bit();
 		itoa(sensorValue,str,10);
 		printString(str);
 		transmitByte(10);
