@@ -11,6 +11,7 @@
 #include "USART.h"
 #include <stdlib.h>
 #include <avr/interrupt.h>
+#include <avr/power.h>
 
 volatile uint8_t q_second_ctn = 0; // quarter-second timer
 
@@ -18,10 +19,13 @@ int main(void)
 {
 	uint8_t sensorValue;
 	
+	// set F_CPU to 8MHz
+	clock_prescale_set(clock_div_1);
+	
 	char str[16];
 	
     initUSART();
-	init_ADC(5,8,8); // init_ADC(AD5,8-bit,prescale /8)
+	init_ADC(0,8,64); // init_ADC(AD5,8-bit,prescale /8)
 	
 	// Timer initialization =========
 	TCCR0B |= (1<<CS02) | (1<<CS00); // clock prescaller 1024
@@ -52,7 +56,7 @@ int main(void)
 		// TIMER ===========================
 		if (q_second_ctn >= 8) { // toggle PORTC4 state every x*0.25s
 			q_second_ctn = 0;
-			PORTC ^= (1<<PORTC4);
+			//PORTC ^= (1<<PORTC4);
 		}
 		// =================================
 		_delay_ms(20);
