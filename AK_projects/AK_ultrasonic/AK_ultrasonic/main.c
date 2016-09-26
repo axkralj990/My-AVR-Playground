@@ -29,6 +29,9 @@ int main(void)
 	
     double distance;
 	char str[16];
+	uint8_t no_obstacle_T = 33; //ms
+	uint8_t near_dist_T = 40; //ms
+	uint16_t far_dist_T = 800; //ms
 	
 	initUSART();
 	init_TICTOC();
@@ -64,36 +67,37 @@ int main(void)
 		
 		while(loop_time_ctn <= 60);
 		
-		
 		distance = echo_time / (double)CONVERT2CM;
 		
 		dtostrf(distance,5,1,str);
 		printLine(str);
 		
 		
-		// beeper
+		// beeper setup
 		beep_period = 1000/((-0.3/CONVERT2CM)*(float)echo_time+31);
-		beep_period = 80;
-		if(beep_period <= 40 && beep_period > 33){
+		
+		if(beep_period <= near_dist_T && beep_period > no_obstacle_T){
 			beep_enable = 0;
 			PORTC |= (1<<PORTC1);
 		}
-		else if(beep_period >= 1000 || beep_period < 33){
+		else if(beep_period >= far_dist_T || beep_period <= near_dist_T){
 			beep_enable = 0;
 			PORTC &= ~(1<<PORTC1);
 		}
 		else{
 			beep_enable = 1;
 		}
-		
-		if(beep_ctn >= beep_period) beep_ctn = 0;
+
 	}
 }
 
 ISR(TIMER0_COMPA_vect){
 	loop_time_ctn++;
 	beep_ctn++;
-	if(beep_period <= beep_ctn && beep_enable == 1) PORTC ^= (1<<PORTC1);
+	if(beep_period <= beep_ctn && beep_enable == 1){
+		PORTC ^= (1<<PORTC1);
+		beep_ctn = 0;
+	}
 }
 
 ISR(PCINT0_vect){
@@ -113,7 +117,6 @@ void init_TICTOC()
 {
 	TCCR1B |= (1<<CS11); // clock prescaler 8
 	// WGM -> NORMAL mode is default
-	// TIMSK0 |= (1<<TOIE1); // Timer/Counter1 Overflow Interrupt Enable
 }
 
 void tic()
