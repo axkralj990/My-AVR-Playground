@@ -14,10 +14,12 @@
 int main(void)
 {
 	uint16_t sensorValue;
-	char str[16];
+	double voltage;
+	char voltage_str[16];
+	char sensorValue_str[16];
 	
     initUSART();
-	init_ADC(5,10,8);
+	init_ADC(3,10,8);
 	
 	//start_FreeRunning_ADC();
 	
@@ -28,9 +30,15 @@ int main(void)
     {
 		start_SingleConversion_ADC();
 		sensorValue = read_ADC_10bit();
-		itoa(sensorValue,str,10);
-		printString(str);
-		transmitByte(10);
+		//voltage = (double)sensorValue / 198.2558;
+		//dtostrf(voltage,5,2,voltage_str);
+		dtostrf(sensorValue,5,2,sensorValue_str);
+		//printString(voltage_str); printString("_");
+		//printString("35"); printString("_");
+		//printString("40"); printString("_");
+		//printString("50"); printString("_");
+		printLine(sensorValue_str);
+		
 		_delay_ms(20);
     }
 }

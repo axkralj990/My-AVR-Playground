@@ -65,7 +65,7 @@ int main(void)
 		}
 		sei();
 		
-		while(loop_time_ctn <= 60);
+		while(loop_time_ctn <= 20);
 		
 		distance = echo_time / (double)CONVERT2CM;
 		

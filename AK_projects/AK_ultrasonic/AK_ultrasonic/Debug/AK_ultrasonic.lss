@@ -454,10 +454,10 @@ uint32_t toc()
 		sei();
      36e:	78 94       	sei
 		
-		while(loop_time_ctn <= 60);
+		while(loop_time_ctn <= 20);
      370:	80 91 08 01 	lds	r24, 0x0108
      374:	90 91 09 01 	lds	r25, 0x0109
-     378:	cd 97       	sbiw	r24, 0x3d	; 61
+     378:	45 97       	sbiw	r24, 0x15	; 21
      37a:	d0 f3       	brcs	.-12     	; 0x370 <main+0x98>
 		
 		distance = echo_time / (double)CONVERT2CM;
