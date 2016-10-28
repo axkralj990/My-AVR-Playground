@@ -16,24 +16,28 @@ int main(void)
 	uint16_t time = 0;
 	float w = 2*M_PI*2/1024;
 	float wave1;
+	uint8_t potentiometer;
+	float freq;
 	char wave1_str[16];
 	
     initUSART();
+	init_ADC(3,8,8);
 	
 	TCCR1B |= (1<<WGM12) | (1<<CS10) | (1<<CS12);
-	//OCR1A = 62813;
-	OCR1A = 500;
+	OCR1A = 62813;
+	//OCR1A = 500;
 	
     while (1) 
     {
+		start_SingleConversion_ADC();
+		potentiometer = read_ADC_8bit();
+		freq = (float)potentiometer/25.5;
+		w = 2*M_PI*freq/1024;
 		time = TCNT1;
-		wave1 = sin(w*(double)time);
-		//wave1 = (float)time/500;
+		wave1 = sin(w*(float)time);
 		dtostrf(wave1,3,4,wave1_str);
 		
-		printString(wave1_str);
-		printString("_");
-		printLine("0.777");
+		printLine(wave1_str);
 		
 		//_delay_ms(5);
     }

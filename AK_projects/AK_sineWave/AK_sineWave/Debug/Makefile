@@ -37,6 +37,7 @@ SUBDIRS :=
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS +=  \
+../../../AK_libraries/AK_ADC_lib.c \
 ../../../AK_libraries/USART.c \
 ../main.c
 
@@ -48,18 +49,22 @@ ASM_SRCS +=
 
 
 OBJS +=  \
+AK_ADC_lib.o \
 USART.o \
 main.o
 
 OBJS_AS_ARGS +=  \
+AK_ADC_lib.o \
 USART.o \
 main.o
 
 C_DEPS +=  \
+AK_ADC_lib.d \
 USART.d \
 main.d
 
 C_DEPS_AS_ARGS +=  \
+AK_ADC_lib.d \
 USART.d \
 main.d
 
@@ -77,6 +82,8 @@ LINKER_SCRIPT_DEP+=
 
 
 # AVR32/GNU C Compiler
+
+
 
 
 
