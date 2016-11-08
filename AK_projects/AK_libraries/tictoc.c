@@ -44,6 +44,7 @@ uint32_t micros()
 	return timer_us;
 }
 
+ISR(TIMER0_COMPA_vect)
 {
 	timer_ms += 1;
 }
