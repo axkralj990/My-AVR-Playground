@@ -138,7 +138,7 @@ Returns 1 if test was OK (it received 0x68 address from the chip),
 otherwise it returns 0 and remain in an infinite loop while()
 */
 
-void MPU6050_get_motion(uint16_t* motion);
+void MPU6050_get_motion(int16_t* motion);
 /*
 MPU6050_get_motion() writes to an array of all 6 readings received from
 the accelerometer and gyro. It stores them to the 6-element array passed
@@ -151,7 +151,7 @@ motion[1] - Y-gyro reading
 motion[2] - Z-gyro reading
 */
 
-void MPU6050_get_accel(uint16_t* acceleration);
+void MPU6050_get_accel(int16_t* acceleration);
 /*
 MPU6050_get_accel() writes to an array of accelerations received from
 the accelerometer. It stores them to the 3-element array passed
@@ -161,7 +161,7 @@ acceleration[1] - Y-accelerometer reading
 acceleration[2] - Z-accelerometer reading
 */
 
-void MPU6050_get_gyro(uint16_t* gyroRates);
+void MPU6050_get_gyro(int16_t* gyroRates);
 /*
 MPU6050_get_gyro() writes to an array of angular rates received from
 the gyroscope. It stores them to the 3-element array passed
@@ -206,4 +206,34 @@ clockSource:
 1 - PLL with X axis gyroscope reference
 2 - PLL with Y axis gyroscope reference
 3 - PLL with Z axis gyroscope reference
+*/
+
+void MPU6050_set_accel_bias_reg(long *accel_bias);
+/**
+* @brief Push biases to the accel bias 6500 registers.
+* This function expects biases relative to the current sensor output, and
+* these biases will be added to the factory-supplied values. Bias inputs are LSB
+* in +-8G format.
+* @param[in] accel_bias New biases.
+* @return 0 if successful.
+*/
+
+void MPU6050_set_gyro_bias_reg(long *gyro_bias);
+/**
+* @brief Push biases to the gyro bias 6500/6050 registers.
+* This function expects biases relative to the current sensor output, and
+* these biases will be added to the factory-supplied values. Bias inputs are LSB
+* in +-1000dps format.
+* @param[in] gyro_bias New biases.
+* @return 0 if successful.
+*/
+
+void MPU6050_auto_set_accel_bias();
+/*
+MPU6050_auto_set_accel_bias() is not yet completely implemented!
+*/
+
+void MPU6050_auto_set_gyro_bias();
+/*
+MPU6050_auto_set_gyro_bias() calculates the bias from the gyro when stationary.
 */

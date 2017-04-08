@@ -18,9 +18,9 @@ void statusLED(uint8_t status);
 int main(void)
 {
 	uint8_t timing_bit = 0;
-	uint16_t gyr[6];
+	int16_t gyr[3];
 	char gyrX_str[16], gyrY_str[16], gyrZ_str[16];
-	uint8_t scale_selector = 1;
+	uint8_t scale_selector = 2;
 	
 	DDRD |= (1<<DDD3);
 	
@@ -37,6 +37,7 @@ int main(void)
 	3 - 2000 deg/s, 16.4 LSB/(deg/s)
 	*/
 	MPU6050_set_gyroFS(scale_selector);
+	MPU6050_set_accelFS(2);
 	
 	if (MPU6050_test_I2C()) {
 		printLine("=== IMU working properly ===");
@@ -53,14 +54,18 @@ int main(void)
 		}
 	}
 	
+	printLine("Calibrating Gyro...");
+	MPU6050_auto_set_gyro_bias();
+	printLine("Calibration OK");
+	
     while (1) 
     {
-		//MPU6050_get_gyro(gyr);
+		MPU6050_get_gyro(gyr);
 		//MPU6050_get_accel(gyr);
-		MPU6050_get_motion(gyr);
-		itoa(gyr[3],gyrX_str,10);
-		itoa(gyr[4],gyrY_str,10);
-		itoa(gyr[5],gyrZ_str,10);
+		//MPU6050_get_motion(gyr);
+		itoa(gyr[0],gyrX_str,10);
+		itoa(gyr[1],gyrY_str,10);
+		itoa(gyr[2],gyrZ_str,10);
 		printString(gyrX_str); printString("_");
 		printString(gyrY_str); printString("_");
 		printLine(gyrZ_str);
