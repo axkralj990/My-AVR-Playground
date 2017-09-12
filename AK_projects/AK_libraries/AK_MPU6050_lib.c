@@ -9,19 +9,18 @@
  */ 
 
 #include <avr/io.h>
+#include <stdlib.h>
 #include "AK_MPU6050_lib.h"
 #include "i2c_master.h"
-
 #include "USART.h"
-#include <stdlib.h>
 
 void MPU6050_init()
 {
 	i2c_init();
 	MPU6050_set_clockSource(1);
-	MPU6050_set_sleepMode(0);
 	MPU6050_set_gyroFS(2);
 	MPU6050_set_accelFS(0);
+	MPU6050_set_sleepMode(0);
 }
 
 uint8_t MPU6050_test_I2C()
@@ -103,23 +102,25 @@ void MPU6050_set_sleepMode(uint8_t enableSleep)
 
 void MPU6050_set_gyroFS(uint8_t gyroFS)
 {
+	uint8_t gyroFSregValue = 0;
+	
 	switch(gyroFS) {
 		case 0:
-			i2c_writeReg(MPU6050_ADDRESS, MPU6050_RA_GYRO_CONFIG,(uint8_t*)0b00000000,1);
+			gyroFSregValue = 0b00000000;
 			break;
 		case 1:
-			i2c_writeReg(MPU6050_ADDRESS, MPU6050_RA_GYRO_CONFIG,(uint8_t*)0b00001000,1);
+			gyroFSregValue = 0b00001000;
 			break;
 		case 2:
-			i2c_writeReg(MPU6050_ADDRESS, MPU6050_RA_GYRO_CONFIG,(uint8_t*)0b00010000,1);
+			gyroFSregValue = 0b00010000;
 			break;
 		case 3:
-			i2c_writeReg(MPU6050_ADDRESS, MPU6050_RA_GYRO_CONFIG,(uint8_t*)0b00011000,1);
+			gyroFSregValue = 0b00011000;
 			break;
 		default:
-			i2c_writeReg(MPU6050_ADDRESS, MPU6050_RA_GYRO_CONFIG,(uint8_t*)0b00000000,1);
-			break;
+			gyroFSregValue = 0b00000000;
 	}
+	i2c_writeReg(MPU6050_ADDRESS, MPU6050_RA_GYRO_CONFIG,&gyroFSregValue,1);
 }
 
 void MPU6050_set_accelFS(uint8_t accelFS)
@@ -168,7 +169,7 @@ void MPU6050_set_clockSource(uint8_t clockSource)
 			i2c_readReg(MPU6050_ADDRESS, MPU6050_RA_PWR_MGMT_1, &power_reg_read, 1);
 			power_reg_write = power_reg_read & ~(0b00000111);
 			power_reg_write |= (0b00000000);
-			i2c_writeReg(MPU6050_ADDRESS, MPU6050_RA_PWR_MGMT_1, &power_reg_write, 1);;
+			i2c_writeReg(MPU6050_ADDRESS, MPU6050_RA_PWR_MGMT_1, &power_reg_write, 1);
 			break;
 		case 1:
 			i2c_readReg(MPU6050_ADDRESS, MPU6050_RA_PWR_MGMT_1, &power_reg_read, 1);
@@ -193,6 +194,61 @@ void MPU6050_set_clockSource(uint8_t clockSource)
 			power_reg_write = power_reg_read & ~(0b00000111);
 			power_reg_write |= (0b00000001);
 			i2c_writeReg(MPU6050_ADDRESS, MPU6050_RA_PWR_MGMT_1, &power_reg_write, 1);
+			break;
+	}
+}
+
+void MPU6050_set_dlpf(uint8_t dlpf)
+{
+	uint8_t config_reg_read, config_reg_write;
+	switch(dlpf) {
+		case 0:
+			i2c_readReg(MPU6050_ADDRESS, MPU6050_RA_CONFIG, &config_reg_read, 1);
+			config_reg_write = config_reg_read & ~(0b00000111);
+			config_reg_write |= (0b00000000);
+			i2c_writeReg(MPU6050_ADDRESS, MPU6050_RA_CONFIG, &config_reg_write, 1);
+			break;
+		case 1:
+			i2c_readReg(MPU6050_ADDRESS, MPU6050_RA_CONFIG, &config_reg_read, 1);
+			config_reg_write = config_reg_read & ~(0b00000111);
+			config_reg_write |= (0b00000001);
+			i2c_writeReg(MPU6050_ADDRESS, MPU6050_RA_CONFIG, &config_reg_write, 1);
+			break;
+		case 2:
+			i2c_readReg(MPU6050_ADDRESS, MPU6050_RA_CONFIG, &config_reg_read, 1);
+			config_reg_write = config_reg_read & ~(0b00000111);
+			config_reg_write |= (0b00000010);
+			i2c_writeReg(MPU6050_ADDRESS, MPU6050_RA_CONFIG, &config_reg_write, 1);
+			break;
+		case 3:
+			i2c_readReg(MPU6050_ADDRESS, MPU6050_RA_CONFIG, &config_reg_read, 1);
+			config_reg_write = config_reg_read & ~(0b00000111);
+			config_reg_write |= (0b00000011);
+			i2c_writeReg(MPU6050_ADDRESS, MPU6050_RA_CONFIG, &config_reg_write, 1);
+			break;
+		case 4:
+			i2c_readReg(MPU6050_ADDRESS, MPU6050_RA_CONFIG, &config_reg_read, 1);
+			config_reg_write = config_reg_read & ~(0b00000111);
+			config_reg_write |= (0b00000100);
+			i2c_writeReg(MPU6050_ADDRESS, MPU6050_RA_CONFIG, &config_reg_write, 1);
+			break;
+		case 5:
+			i2c_readReg(MPU6050_ADDRESS, MPU6050_RA_CONFIG, &config_reg_read, 1);
+			config_reg_write = config_reg_read & ~(0b00000111);
+			config_reg_write |= (0b00000101);
+			i2c_writeReg(MPU6050_ADDRESS, MPU6050_RA_CONFIG, &config_reg_write, 1);
+			break;
+		case 6:
+			i2c_readReg(MPU6050_ADDRESS, MPU6050_RA_CONFIG, &config_reg_read, 1);
+			config_reg_write = config_reg_read & ~(0b00000111);
+			config_reg_write |= (0b00000110);
+			i2c_writeReg(MPU6050_ADDRESS, MPU6050_RA_CONFIG, &config_reg_write, 1);
+			break;
+		default:
+			i2c_readReg(MPU6050_ADDRESS, MPU6050_RA_CONFIG, &config_reg_read, 1);
+			config_reg_write = config_reg_read & ~(0b00000111);
+			config_reg_write |= (0b00000000);
+			i2c_writeReg(MPU6050_ADDRESS, MPU6050_RA_CONFIG, &config_reg_write, 1);
 			break;
 	}
 }

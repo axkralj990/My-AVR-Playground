@@ -198,22 +198,6 @@ accelFS:
 3 - 16g, 2048 LSB/g
 */
 
-void MPU6050_set_dlpf(uint8_t dlpf);
-/*
-MPU6050_set_dlpf() sets the difital low pass filter for the
-gyro and the accelerometer.
-| DLPF | Bandwidth (Hz) |
-|      | Accel |  Gyro  |
-|   0  |   260 |   256  |
-|   1  |   184 |   188  |
-|   2  |    94 |    98  |
-|   3  |    44 |    42  |
-|   4  |    21 |    20  |
-|   5  |    10 |    10  |
-|   6  |     5 |     5  |
-|   7  |    RESERVED    |
-*/
-
 void MPU6050_set_clockSource(uint8_t clockSource);
 /*
 MPU6050_set_clockSource() sets the source of the clock for I2C communication.
@@ -225,7 +209,7 @@ clockSource:
 */
 
 void MPU6050_set_accel_bias_reg(long *accel_bias);
-/*
+/**
 * @brief Push biases to the accel bias 6500 registers.
 * This function expects biases relative to the current sensor output, and
 * these biases will be added to the factory-supplied values. Bias inputs are LSB
