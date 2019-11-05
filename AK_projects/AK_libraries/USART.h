@@ -4,11 +4,13 @@
      the bit-rate multiplier.
  */
 
-#ifndef BAUD                          /* if not defined in Makefile... */
-#define BAUD  9600                     /* set a safe default baud rate */
-#endif
+#ifndef USART_H
+#define USART_H
 
-                                  /* These are defined for convenience */
+#ifndef BAUD                          /* if not defined in Makefile... */
+#define BAUD  9600                    /* set a safe default baud rate */
+#endif
+                                      /* These are defined for convenience */
 #define   USART_HAS_DATA   bit_is_set(UCSR0A, RXC0)
 #define   USART_READY      bit_is_set(UCSR0A, UDRE0)
 
@@ -46,3 +48,5 @@ void printHexByte(uint8_t byte);
 uint8_t getNumber(void);
 /* takes in up to three ascii digits,
  converts them to a byte when press enter */
+
+#endif

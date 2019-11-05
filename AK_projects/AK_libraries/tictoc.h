@@ -5,6 +5,9 @@
  *  Author: Aleksij
  */ 
 
+#ifndef TICTOC_H
+#define TICTOC_H
+
 /* tictoc is used to time events with a resolution
 of 4us. It was written for purposes of controlling and reading RC servo
 signals.
@@ -28,3 +31,5 @@ Return type is an unsigned 32-bit integer.
 */
 
 uint32_t micros();
+
+#endif

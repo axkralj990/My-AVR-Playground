@@ -5,11 +5,10 @@
  * Author : Aleksij
  */ 
 
-
-
 #include <avr/io.h>
-#include "tictoc.h"
 #include <avr/interrupt.h>
+
+#include "tictoc.h"
 
 volatile uint32_t timer_us = 0, timer_ms = 0;
 

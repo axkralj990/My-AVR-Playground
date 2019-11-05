@@ -289,29 +289,33 @@ void MPU6050_set_gyro_bias_reg(long *gyro_bias)
 
 void MPU6050_auto_set_accel_bias() {
 	int16_t accel[3];
-	long ac_bias[3] = {0, 0, 0};
+	long ac_bias[3] = {0,0,0};
+	MPU6050_set_accel_bias_reg(ac_bias);
 	MPU6050_set_accelFS(2); // set to 8G range
 	
-	for (uint16_t i = 0; i < 1000; i++) {
+	/*
+	for (uint16_t i = 0; i < 1024; i++) {
 		MPU6050_get_accel(accel);
 		for (uint8_t j = 0; j < 3; j++) {
 			ac_bias[j] += accel[j];
 		}
 	}
 	
-	for (uint8_t i = 0; i < 3; i++) {
-		ac_bias[i] /= -1000;
+	for (uint8_t k = 0; k < 3; k++) {
+		//ac_bias[i] /= -1000;
+		ac_bias[k] = ac_bias[k] / 1024;
 	}
 	
 	MPU6050_set_accel_bias_reg(ac_bias);
+	*/
 	
-	char gyrX_str[16], gyrY_str[16], gyrZ_str[16];
-	itoa(ac_bias[0],gyrX_str,10);
-	itoa(ac_bias[1],gyrY_str,10);
-	itoa(ac_bias[2],gyrZ_str,10);
-	printString(gyrX_str); printString("_");
-	printString(gyrY_str); printString("_");
-	printLine(gyrZ_str);
+	char accX_str[16], accY_str[16], accZ_str[16];
+	itoa(ac_bias[0],accX_str,10);
+	itoa(ac_bias[1],accY_str,10);
+	itoa(ac_bias[2],accZ_str,10);
+	printString(accX_str); printString("_");
+	printString(accY_str); printString("_");
+	printLine(accZ_str);
 }
 
 void MPU6050_auto_set_gyro_bias() {
